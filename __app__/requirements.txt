@@ -1,0 +1,6 @@
+azure-functions
+azure-functions-durable>=1.0.0b6
+azure-storage-blob
+numpy
+matplotlib
+seaborn
