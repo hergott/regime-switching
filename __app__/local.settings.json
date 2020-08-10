@@ -1,0 +1,9 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "[INSERT STORAGE ENDPOINT HERE]",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "BlobCredentials": "[INSERT BLOB ACCESS KEY HERE]",
+    "AzureWebJobsSendGridApiKey": "[INSERT SENDGRID API KEY HERE]"
+  }
+}
