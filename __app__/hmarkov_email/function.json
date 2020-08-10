@@ -1,0 +1,19 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "name": "inputs",
+      "type": "activityTrigger",
+      "direction": "in",
+      "datatype": "string"
+    },
+    {
+      "type": "sendGrid",
+      "name": "sendGridMessage",
+      "direction": "out",
+      "apiKey": "AzureWebJobsSendGridApiKey",
+      "from": "regime_regressions_notifications@miabellaai.net"
+    }
+  ],
+  "disabled": false
+}
