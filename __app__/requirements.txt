@@ -4,3 +4,4 @@ azure-storage-blob
 numpy
 matplotlib
 seaborn
+aiohttp
