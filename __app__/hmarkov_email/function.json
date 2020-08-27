@@ -12,7 +12,7 @@
       "name": "sendGridMessage",
       "direction": "out",
       "apiKey": "AzureWebJobsSendGridApiKey",
-      "from": "regime_regressions_notifications@miabellaai.net"
+      "from": "[ENTER EMAIL ADDRESS OF THE COMPANY/INDIVIDUAL SENDING THE NOTIFICATION EMAIL TO THE USER]"
     }
   ],
   "disabled": false
