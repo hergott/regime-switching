@@ -17,12 +17,15 @@ import uuid
 
 import os
 import numpy as np
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import azure.functions as func          # pylint: disable=import-error
 import azure.durable_functions as df    # pylint: disable=import-error
+from azure.durable_functions.models.OrchestrationRuntimeStatus import OrchestrationRuntimeStatus  # pylint: disable=import-error
 
 from azure.storage.blob import BlobServiceClient  # pylint: disable=all
+
+from aiohttp import ContentTypeError
 
 
 async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
@@ -66,6 +69,35 @@ async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
         err = f"ERROR:: hmarkov function: Retrieving text from request body returned an error.\n{str(ve)}"
         blob_save_output(err, is_err=True)
         return func.HttpResponse(err, status_code=400, mimetype=mimetext)
+
+    # Check for purge command. If present, purge without analysis.
+    purge_past_instances = info.get('purge_past_instances', False)
+
+    if purge_past_instances:
+        keep_days = info.get('keep_days', 3)
+
+        client = df.DurableOrchestrationClient(starter)
+
+        created_time_from = datetime.today() + timedelta(days=-30000)
+        created_time_to = datetime.today() + timedelta(days=-keep_days)
+        runtime_statuses = [OrchestrationRuntimeStatus.Completed,
+                            OrchestrationRuntimeStatus.Terminated, OrchestrationRuntimeStatus.Failed]
+
+        try:
+            purge_coroutine = client.purge_instance_history_by(
+                created_time_from, created_time_to, runtime_statuses)
+
+            purge_history = await purge_coroutine
+
+        except ContentTypeError as e:
+            purge_err = f'\nError: failed to delete past instances. The ContentTypeError can occur when running locally or when there are no instances to purge.\n{repr(e)}\n'
+
+            return func.HttpResponse(purge_err, status_code=500, mimetype=mimetext)
+
+        else:
+            purge_msg = f'Deleted past instances, without analyzing any submitted data. Purged {purge_history.instances_deleted} past instances that were created from {created_time_from} to {created_time_to}.'
+
+            return func.HttpResponse(purge_msg, status_code=200, mimetype=mimetext)
 
     # PARSE REQUEST BODY
     #
