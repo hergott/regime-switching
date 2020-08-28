@@ -94,6 +94,11 @@ async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
 
             return func.HttpResponse(purge_err, status_code=500, mimetype=mimetext)
 
+        except Exception as e:
+            purge_err = f'\nError: failed to delete past instances. Unknown error:\n{repr(e)}\n'
+
+            return func.HttpResponse(purge_err, status_code=500, mimetype=mimetext)
+
         else:
             purge_msg = f'Deleted past instances, without analyzing any submitted data. Purged {purge_history.instances_deleted} past instances that were created from {created_time_from} to {created_time_to}.'
 
