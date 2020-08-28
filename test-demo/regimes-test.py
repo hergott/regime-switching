@@ -70,8 +70,12 @@ def main():
     r = {'regimes': 3, 'runs': 5, 'y': y,  'convergence': 1e-8,
          'create_charts': create_charts, 'calc_tstats': calc_tstats, disp: disp, 'x': [x, x, x]}
 
-    # Comment out this line if you don't want an email.
-    r['notification_email_address'] = '[ENTER EMAIL ADDRESS HERE FOR NOTIFICATION]'
+    # #Uncomment these lines to test the functionality that removes past instance history.
+    # r['purge_past_instances'] = True
+    # r['keep_days'] = 0 
+    
+    # # Uncomment this line if you want an email.
+    # r['notification_email_address'] = '[ENTER EMAIL ADDRESS HERE FOR NOTIFICATION]'
 
     r_json = json.dumps(r)  
 
