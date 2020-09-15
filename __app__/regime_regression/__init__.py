@@ -78,8 +78,8 @@ async def main(req: func.HttpRequest, starter: str) -> func.HttpResponse:
 
         client = df.DurableOrchestrationClient(starter)
 
-        created_time_from = datetime.today() + timedelta(days=-30000)
-        created_time_to = datetime.today() + timedelta(days=-keep_days)
+        created_time_from = datetime.utcnow() + timedelta(days=-30000)
+        created_time_to = datetime.utcnow() + timedelta(days=-keep_days)
         runtime_statuses = [OrchestrationRuntimeStatus.Completed,
                             OrchestrationRuntimeStatus.Terminated, OrchestrationRuntimeStatus.Failed]
 
