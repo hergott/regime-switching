@@ -1,5 +1,5 @@
 azure-functions
-azure-functions-durable>=1.0.0b6
+azure-functions-durable>=1.0.0b8
 azure-storage-blob
 numpy
 matplotlib
